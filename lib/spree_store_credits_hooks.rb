@@ -10,7 +10,7 @@ class SpreeStaticContentHooks < Spree::ThemeSupport::HookListener
      )     
   end
   
-  insert_after :checkout_payment_step, :partial => 'checkout/store_credits'
+  insert_before :checkout_payment_step, :partial => 'checkout/store_credits'
   
   insert_after :account_my_orders, :partial => 'users/store_credits'
   
