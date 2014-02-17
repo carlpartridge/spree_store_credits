@@ -6,7 +6,8 @@ Order.class_eval do
   # In that case, we create an order before assigning a user
   before_save :process_store_credit, :if => "self.user.present? && @store_credit_amount"
   before_save :remove_store_credits, :if => "self.user.present?"
-  after_save :ensure_sufficient_credit, :if => "self.user.present?"
+  #after_save :ensure_sufficient_credit, :if => "self.user.present?"
+  after_save :ensure_sufficient_credit, :if => "self.user.present? && !self.completed?"
 
   has_many :store_credits, :class_name => 'StoreCreditAdjustment', :conditions => "source_type='StoreCredit'"
 
