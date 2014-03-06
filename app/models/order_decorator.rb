@@ -34,11 +34,11 @@ Order.class_eval do
     # store credit can't be greater than order total (not including existing credit), or the users available credit
     @store_credit_amount = [@store_credit_amount, user.store_credits_total, (total + store_credit_amount.abs)].min
 
-    #if @store_credit_amount <= 0
-      #if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
-        #sca.destroy
-      #end
-    #else
+    if @store_credit_amount < 0
+      if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+        sca.destroy
+      end
+    else
       if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
         sca.update_attributes({:amount => -(@store_credit_amount)})
       else
@@ -50,7 +50,7 @@ Order.class_eval do
       update_totals
       payment.amount = total if payment
     end
-  #end
+  end
 
   # consume users store credit once the order has completed.
   fsm = self.state_machines[:state]
