@@ -34,12 +34,10 @@ Order.class_eval do
     # store credit can't be greater than order total (not including existing credit), or the users available credit
     @store_credit_amount = [@store_credit_amount, user.store_credits_total, (total + store_credit_amount.abs)].min
 
-    if @store_credit_amount < 0
-      if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
-        sca.destroy
-      end
+    if @store_credit_amount <= 0
+      adjustments.store_credits.destroy_all
     else
-      if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      if sca = adjustments.store_credits.first
         sca.update_attributes({:amount => -(@store_credit_amount)})
       else
         #create adjustment off association to prevent reload
