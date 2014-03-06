@@ -37,9 +37,9 @@ Order.class_eval do
     if @store_credit_amount <= 0
       adjustments.store_credits.destroy_all
     else
-      if sca = adjustments.store_credits.first
-        sca.update_attributes({:amount => -(@store_credit_amount)})
-      else
+      #if sca = adjustments.store_credits.first
+        #sca.update_attributes({:amount => -(@store_credit_amount)})
+      #else
         #create adjustment off association to prevent reload
         sca = adjustments.create(:source_type => "StoreCredit",  :label => I18n.t(:store_credit) , :amount => -(@store_credit_amount))
       end
