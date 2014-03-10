@@ -4,7 +4,7 @@ Order.class_eval do
   before_save :process_store_credit, :if => "@store_credit_amount"
   before_save :remove_store_credits
   #after_save :ensure_sufficient_credit
-  after_save :ensure_sufficient_credit, :if => "self.user.present? && !self.completed?"
+  #after_save :ensure_sufficient_credit, :if => "self.user.present? && !self.completed?"
 
   has_many :store_credits, :class_name => 'StoreCreditAdjustment', :conditions => "source_type='StoreCredit'"
 
