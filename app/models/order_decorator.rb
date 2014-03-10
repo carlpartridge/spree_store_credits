@@ -88,6 +88,6 @@ Order.class_eval do
   end
 
   def remove_store_credits
-    store_credits.clear if @remove_store_credits == '1'
+    #store_credits.clear if @remove_store_credits == '1'
   end
 end
