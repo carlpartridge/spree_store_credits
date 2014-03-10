@@ -36,7 +36,7 @@ Order.class_eval do
 
     if @store_credit_amount <= 0
       if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
-        #sca.destroy
+        sca.destroy
       end
     else
       if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
@@ -81,7 +81,7 @@ Order.class_eval do
   def ensure_sufficient_credit
     if user.store_credits_total < store_credit_amount
       #user's credit does not cover all adjustments.
-      #store_credits.destroy_all
+      store_credits.destroy_all
 
       update!
     end
