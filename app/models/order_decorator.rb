@@ -83,11 +83,11 @@ Order.class_eval do
       #user's credit does not cover all adjustments.
       store_credits.destroy_all
 
-      update!
+      #update!
     end
   end
 
   def remove_store_credits
-    #store_credits.clear if @remove_store_credits == '1'
+    store_credits.clear if @remove_store_credits == '1'
   end
 end
