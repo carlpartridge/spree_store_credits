@@ -40,7 +40,7 @@ Order.class_eval do
 
     if @store_credit_amount <= 0
       if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
-        #sca.destroy
+        sca.destroy
       end
     else
       if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
