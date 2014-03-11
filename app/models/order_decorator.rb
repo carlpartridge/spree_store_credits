@@ -54,6 +54,10 @@ Order.class_eval do
       update_totals
       payment.amount = total if payment
     end
+    logger.debug "end process_sc:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
   end
 
   # consume users store credit once the order has completed.
@@ -61,6 +65,10 @@ Order.class_eval do
   fsm.after_transition :to => 'complete', :do => :consume_users_credit
 
   def consume_users_credit
+    logger.debug "start consume_users_c:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
     return unless completed?
     credit_used = self.store_credit_amount
 
@@ -77,21 +85,42 @@ Order.class_eval do
         end
       end
     end
+    
+    logger.debug "end consume_Users_c:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
 
   end
 
   # ensure that user has sufficient credits to cover adjustments
   #
   def ensure_sufficient_credit
+    logger.debug "start ensure_suff_c:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
     if user.store_credits_total < store_credit_amount
       #user's credit does not cover all adjustments.
       store_credits.destroy_all
 
       update!
     end
+    logger.debug "end ensure_suff_sc:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
   end
 
   def remove_store_credits
+    logger.debug "start remove_sc:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
     store_credits.clear if @remove_store_credits == '1'
+        logger.debug "end remove_sc:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
   end
 end
