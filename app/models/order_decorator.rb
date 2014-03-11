@@ -29,6 +29,10 @@ Order.class_eval do
   # credit or update store credit adjustment to correct value if amount specified
   #
   def process_store_credit
+    logger.debug "start process_sc:"
+    if sca = adjustments.detect {|adjustment| adjustment.source_type == "StoreCredit" }
+      logger.debug "#{sca}, #{sca.inspect}"
+    end
     @store_credit_amount = BigDecimal.new(@store_credit_amount.to_s).round(2)
 
     # store credit can't be greater than order total (not including existing credit), or the users available credit
@@ -53,8 +57,8 @@ Order.class_eval do
   end
 
   # consume users store credit once the order has completed.
-  #fsm = self.state_machines[:state]
-  #fsm.after_transition :to => 'complete', :do => :consume_users_credit
+  fsm = self.state_machines[:state]
+  fsm.after_transition :to => 'complete', :do => :consume_users_credit
 
   def consume_users_credit
     return unless completed?
