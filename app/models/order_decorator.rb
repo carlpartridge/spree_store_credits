@@ -87,7 +87,7 @@ Order.class_eval do
       #user's credit does not cover all adjustments.
       store_credits.destroy_all
 
-      #update!
+      update!
     end
   end
 
